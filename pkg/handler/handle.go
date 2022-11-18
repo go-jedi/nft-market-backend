@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rob-bender/our_project/pkg/service"
+	"github.com/rob-bender/nft-market-backend/pkg/service"
 )
 
 type Handler struct {

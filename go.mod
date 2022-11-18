@@ -1,4 +1,4 @@
-module github.com/rob-bender/our_project
+module github.com/rob-bender/nft-market-backend
 
 go 1.18
 
