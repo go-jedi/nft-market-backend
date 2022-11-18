@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY NOT NULL,
+    uid VARCHAR(255) NOT NULL,
+    tele_id BIGINT NOT NULL,
+    tele_name VARCHAR(255) NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT now(),
+	 currency VARCHAR(255),
+	 lang VARCHAR(255),
+    is_terms BOOLEAN NOT NULL DEFAULT 'f'
+);

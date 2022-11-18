@@ -1,0 +1,11 @@
+request GET:
+curl http://localhost:8080/api-v1/event/getAll
+
+request POST:
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "tele_name": "тест"}'   http://localhost:8080/api-v1/user/registration
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/checkAuth
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "lang": "ru"}'   http://localhost:8080/api-v1/user/updateLanguage
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/checkIsLanguage
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "currency": "rub"}'   http://localhost:8080/api-v1/user/updateCurrency
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/checkIsTerms
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/agreeTerms
