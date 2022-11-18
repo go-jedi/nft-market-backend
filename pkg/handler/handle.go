@@ -20,8 +20,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api-v1")
 	{
-		api.POST("/user/registration", h.registrationUser)   // Регистрация пользователя
 		api.POST("/user/checkAuth", h.checkAuth)             // проверка на регистрацию пользователя
+		api.POST("/user/registration", h.registrationUser)   // Регистрация пользователя
 		api.POST("/user/updateLanguage", h.updateLanguage)   // Изменение языка пользователя
 		api.POST("/user/checkIsLanguage", h.checkIsLanguage) // Проверка языка пользователя
 		api.POST("/user/updateCurrency", h.updateCurrency)   // Изменить валюту пользователя

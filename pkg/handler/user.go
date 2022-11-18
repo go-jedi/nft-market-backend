@@ -7,33 +7,6 @@ import (
 	"github.com/rob-bender/nft-market-backend/appl_row"
 )
 
-func (h *Handler) registrationUser(c *gin.Context) {
-	type Body struct {
-		TeleId   int64  `json:"tele_id"`
-		TeleName string `json:"tele_name"`
-	}
-	var body Body
-	if err := c.BindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status":  http.StatusBadRequest,
-			"message": "некорректно переданы данные в body",
-		})
-		return
-	}
-	err, statusCode := h.services.RegistrationUser(appl_row.UserCreate(body))
-	if err != nil {
-		c.JSON(statusCode, map[string]interface{}{
-			"status":  statusCode,
-			"message": err.Error(),
-		})
-		return
-	}
-	c.JSON(statusCode, map[string]interface{}{
-		"status":  statusCode,
-		"message": "успешная регистрация пользователя",
-	})
-}
-
 func (h *Handler) checkAuth(c *gin.Context) {
 	type Body struct {
 		TeleId int64 `json:"tele_id"`
@@ -46,7 +19,7 @@ func (h *Handler) checkAuth(c *gin.Context) {
 		})
 		return
 	}
-	res, err, statusCode := h.services.CheckAuth(body.TeleId)
+	res, statusCode, err := h.services.CheckAuth(body.TeleId)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -69,6 +42,33 @@ func (h *Handler) checkAuth(c *gin.Context) {
 	}
 }
 
+func (h *Handler) registrationUser(c *gin.Context) {
+	type Body struct {
+		TeleId   int64  `json:"tele_id"`
+		TeleName string `json:"tele_name"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.RegistrationUser(appl_row.UserCreate(body))
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешная регистрация пользователя",
+	})
+}
+
 func (h *Handler) updateLanguage(c *gin.Context) {
 	type Body struct {
 		TeleId int64  `json:"tele_id"`
@@ -82,7 +82,7 @@ func (h *Handler) updateLanguage(c *gin.Context) {
 		})
 		return
 	}
-	err, statusCode := h.services.UpdateLanguage(appl_row.UserUpdateLanguage(body))
+	statusCode, err := h.services.UpdateLanguage(appl_row.UserUpdateLanguage(body))
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -108,7 +108,7 @@ func (h *Handler) checkIsLanguage(c *gin.Context) {
 		})
 		return
 	}
-	res, err, statusCode := h.services.CheckIsLanguage(body.TeleId)
+	res, statusCode, err := h.services.CheckIsLanguage(body.TeleId)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -144,7 +144,7 @@ func (h *Handler) updateCurrency(c *gin.Context) {
 		})
 		return
 	}
-	err, statusCode := h.services.UpdateCurrency(appl_row.UserUpdateCurrency(body))
+	statusCode, err := h.services.UpdateCurrency(appl_row.UserUpdateCurrency(body))
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -170,7 +170,7 @@ func (h *Handler) checkIsTerms(c *gin.Context) {
 		})
 		return
 	}
-	res, err, statusCode := h.services.CheckIsTerms(body.TeleId)
+	res, statusCode, err := h.services.CheckIsTerms(body.TeleId)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -205,7 +205,7 @@ func (h *Handler) agreeTerms(c *gin.Context) {
 		})
 		return
 	}
-	err, statusCode := h.services.AgreeTerms(body.TeleId)
+	statusCode, err := h.services.AgreeTerms(body.TeleId)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
