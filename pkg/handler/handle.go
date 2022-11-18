@@ -22,8 +22,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		api.POST("/user/checkAuth", h.checkAuth)             // проверка на регистрацию пользователя
 		api.POST("/user/registration", h.registrationUser)   // Регистрация пользователя
+		api.POST("/user/getUserLanguage", h.getUserLanguage) // Получить выбранный язык пользователя
 		api.POST("/user/updateLanguage", h.updateLanguage)   // Изменение языка пользователя
-		api.POST("/user/checkIsLanguage", h.checkIsLanguage) // Проверка языка пользователя
+		api.POST("/user/getUserCurrency", h.getUserCurrency) // Получить выбранную валюту пользователя
 		api.POST("/user/updateCurrency", h.updateCurrency)   // Изменить валюту пользователя
 		api.POST("/user/checkIsTerms", h.checkIsTerms)       // проверка на пользовательское соглашение
 		api.POST("/user/agreeTerms", h.agreeTerms)           // согласие пользователя с пользовательским соглашением

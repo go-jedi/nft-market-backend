@@ -69,6 +69,41 @@ func (h *Handler) registrationUser(c *gin.Context) {
 	})
 }
 
+func (h *Handler) getUserLanguage(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.GetUserLanguage(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if len(res) > 0 {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение выбранного языка пользователя",
+			"result":  res,
+		})
+	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение выбранного языка пользователя",
+			"result":  res,
+		})
+	}
+}
+
 func (h *Handler) updateLanguage(c *gin.Context) {
 	type Body struct {
 		TeleId int64  `json:"tele_id"`
@@ -96,7 +131,7 @@ func (h *Handler) updateLanguage(c *gin.Context) {
 	})
 }
 
-func (h *Handler) checkIsLanguage(c *gin.Context) {
+func (h *Handler) getUserCurrency(c *gin.Context) {
 	type Body struct {
 		TeleId int64 `json:"tele_id"`
 	}
@@ -108,7 +143,7 @@ func (h *Handler) checkIsLanguage(c *gin.Context) {
 		})
 		return
 	}
-	res, statusCode, err := h.services.CheckIsLanguage(body.TeleId)
+	res, statusCode, err := h.services.GetUserCurrency(body.TeleId)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -119,13 +154,13 @@ func (h *Handler) checkIsLanguage(c *gin.Context) {
 	if len(res) > 0 {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"status":  http.StatusOK,
-			"message": "успешное получение выбранного языка пользователя",
+			"message": "успешное получение выбранной валюты пользователя",
 			"result":  res,
 		})
 	} else {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"status":  http.StatusOK,
-			"message": "успешное получение выбранного языка пользователя",
+			"message": "успешное получение выбранной валюты пользователя",
 			"result":  res,
 		})
 	}

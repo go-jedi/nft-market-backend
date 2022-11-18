@@ -10,10 +10,16 @@ type UserUpdateLanguage struct {
 	Lang   string `json:"lang"`
 }
 
-type CheckUserLanguageResponse struct {
+type GetUserLanguageResponse struct {
 	Id     int    `json:"id"`
 	TeleId int64  `json:"tele_id"`
 	Lang   string `json:"lang"`
+}
+
+type GetUserCurrencyResponse struct {
+	Id       int    `json:"id"`
+	TeleId   int64  `json:"tele_id"`
+	Currency string `json:"currency"`
 }
 
 type UserUpdateCurrency struct {
