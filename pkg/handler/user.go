@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rob-bender/our_project/appl_row"
+	"github.com/rob-bender/nft-market-backend/appl_row"
 )
 
 func (h *Handler) registrationUser(c *gin.Context) {

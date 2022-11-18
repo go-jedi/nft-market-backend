@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/rob-bender/our_project/appl_row"
+	"github.com/rob-bender/nft-market-backend/appl_row"
 )
 
 type TodoUser interface {

@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/rob-bender/our_project/appl_row"
-	"github.com/rob-bender/our_project/pkg/repository"
+	"github.com/rob-bender/nft-market-backend/appl_row"
+	"github.com/rob-bender/nft-market-backend/pkg/repository"
 )
 
 type UserService struct {

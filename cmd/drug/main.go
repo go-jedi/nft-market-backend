@@ -6,10 +6,10 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	server "github.com/rob-bender/our_project"
-	"github.com/rob-bender/our_project/pkg/handler"
-	"github.com/rob-bender/our_project/pkg/repository"
-	"github.com/rob-bender/our_project/pkg/service"
+	server "github.com/rob-bender/nft-market-backend"
+	"github.com/rob-bender/nft-market-backend/pkg/handler"
+	"github.com/rob-bender/nft-market-backend/pkg/repository"
+	"github.com/rob-bender/nft-market-backend/pkg/service"
 	"github.com/sirupsen/logrus"
 )
 
