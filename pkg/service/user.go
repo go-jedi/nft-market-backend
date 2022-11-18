@@ -15,30 +15,30 @@ func NewUserService(r repository.TodoUser) *UserService {
 	}
 }
 
-func (s *UserService) RegistrationUser(userForm appl_row.UserCreate) (error, int) {
-	return s.repo.RegistrationUser(userForm)
-}
-
-func (s *UserService) CheckAuth(teleId int64) (bool, error, int) {
+func (s *UserService) CheckAuth(teleId int64) (bool, int, error) {
 	return s.repo.CheckAuth(teleId)
 }
 
-func (s *UserService) UpdateLanguage(userForm appl_row.UserUpdateLanguage) (error, int) {
+func (s *UserService) RegistrationUser(userForm appl_row.UserCreate) (int, error) {
+	return s.repo.RegistrationUser(userForm)
+}
+
+func (s *UserService) UpdateLanguage(userForm appl_row.UserUpdateLanguage) (int, error) {
 	return s.repo.UpdateLanguage(userForm)
 }
 
-func (s *UserService) CheckIsLanguage(teleId int64) ([]appl_row.CheckUserLanguageResponse, error, int) {
+func (s *UserService) CheckIsLanguage(teleId int64) ([]appl_row.CheckUserLanguageResponse, int, error) {
 	return s.repo.CheckIsLanguage(teleId)
 }
 
-func (s *UserService) UpdateCurrency(userFormCurrency appl_row.UserUpdateCurrency) (error, int) {
+func (s *UserService) UpdateCurrency(userFormCurrency appl_row.UserUpdateCurrency) (int, error) {
 	return s.repo.UpdateCurrency(userFormCurrency)
 }
 
-func (s *UserService) CheckIsTerms(teleId int64) (bool, error, int) {
+func (s *UserService) CheckIsTerms(teleId int64) (bool, int, error) {
 	return s.repo.CheckIsTerms(teleId)
 }
 
-func (s *UserService) AgreeTerms(teleId int64) (error, int) {
+func (s *UserService) AgreeTerms(teleId int64) (int, error) {
 	return s.repo.AgreeTerms(teleId)
 }

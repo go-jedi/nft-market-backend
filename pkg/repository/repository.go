@@ -6,13 +6,13 @@ import (
 )
 
 type TodoUser interface {
-	RegistrationUser(userForm appl_row.UserCreate) (error, int)
-	CheckAuth(teleId int64) (bool, error, int)
-	UpdateLanguage(userForm appl_row.UserUpdateLanguage) (error, int)
-	CheckIsLanguage(teleId int64) ([]appl_row.CheckUserLanguageResponse, error, int)
-	UpdateCurrency(userFormCurrency appl_row.UserUpdateCurrency) (error, int)
-	CheckIsTerms(teleId int64) (bool, error, int)
-	AgreeTerms(teleId int64) (error, int)
+	CheckAuth(teleId int64) (bool, int, error)
+	RegistrationUser(userForm appl_row.UserCreate) (int, error)
+	UpdateLanguage(userForm appl_row.UserUpdateLanguage) (int, error)
+	CheckIsLanguage(teleId int64) ([]appl_row.CheckUserLanguageResponse, int, error)
+	UpdateCurrency(userFormCurrency appl_row.UserUpdateCurrency) (int, error)
+	CheckIsTerms(teleId int64) (bool, int, error)
+	AgreeTerms(teleId int64) (int, error)
 }
 
 type Repository struct {
