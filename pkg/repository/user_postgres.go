@@ -28,7 +28,7 @@ func (r *UserPostgres) CheckAuth(teleId int64) (bool, int, error) {
 	return isAuth, http.StatusOK, nil
 }
 
-func (r *UserPostgres) RegistrationUser(userForm appl_row.UserCreate) (int, error) { // Регистрация пользователя
+func (r *UserPostgres) RegistrationUser(userForm appl_row.UserCreate) (int, error) {
 	var uid string
 	userFormJson, _ := json.Marshal(userForm)
 	err := r.db.QueryRow("SELECT uid($1)", 8).Scan(&uid)
@@ -42,6 +42,20 @@ func (r *UserPostgres) RegistrationUser(userForm appl_row.UserCreate) (int, erro
 	return http.StatusOK, nil
 }
 
+func (r *UserPostgres) GetUserLanguage(teleId int64) ([]appl_row.GetUserLanguageResponse, int, error) {
+	var userDataLang []appl_row.GetUserLanguageResponse
+	var userDataByte []byte
+	err := r.db.QueryRow("SELECT user_get_lang($1)", teleId).Scan(&userDataByte)
+	if err != nil {
+		return []appl_row.GetUserLanguageResponse{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_check_lang из базы данных, %s", err)
+	}
+	err = json.Unmarshal(userDataByte, &userDataLang)
+	if err != nil {
+		return []appl_row.GetUserLanguageResponse{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции CheckIsLanguage, %s", err)
+	}
+	return userDataLang, http.StatusOK, nil
+}
+
 func (r *UserPostgres) UpdateLanguage(userFormLang appl_row.UserUpdateLanguage) (int, error) {
 	userFormLangJson, _ := json.Marshal(userFormLang)
 	_, err := r.db.Exec("SELECT user_update_lang($1)", userFormLangJson)
@@ -51,18 +65,18 @@ func (r *UserPostgres) UpdateLanguage(userFormLang appl_row.UserUpdateLanguage) 
 	return http.StatusOK, nil
 }
 
-func (r *UserPostgres) CheckIsLanguage(teleId int64) ([]appl_row.CheckUserLanguageResponse, int, error) {
-	var userData []appl_row.CheckUserLanguageResponse
-	var userDataByte []byte
-	err := r.db.QueryRow("SELECT user_check_lang($1)", teleId).Scan(&userDataByte)
+func (r *UserPostgres) GetUserCurrency(teleId int64) ([]appl_row.GetUserCurrencyResponse, int, error) {
+	var userDataCurrency []appl_row.GetUserCurrencyResponse
+	var userDataCurrencyByte []byte
+	err := r.db.QueryRow("SELECT user_get_currency($1)", teleId).Scan(&userDataCurrencyByte)
 	if err != nil {
-		return []appl_row.CheckUserLanguageResponse{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_check_lang из базы данных, %s", err)
+		return []appl_row.GetUserCurrencyResponse{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_check_currency из базы данных, %s", err)
 	}
-	err = json.Unmarshal(userDataByte, &userData)
+	err = json.Unmarshal(userDataCurrencyByte, &userDataCurrency)
 	if err != nil {
-		return []appl_row.CheckUserLanguageResponse{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции CheckIsLanguage, %s", err)
+		return []appl_row.GetUserCurrencyResponse{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции CheckIsCurrency, %s", err)
 	}
-	return userData, http.StatusOK, nil
+	return []appl_row.GetUserCurrencyResponse{}, http.StatusOK, nil
 }
 
 func (r *UserPostgres) UpdateCurrency(userFormCurrency appl_row.UserUpdateCurrency) (int, error) {

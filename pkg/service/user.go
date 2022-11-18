@@ -23,12 +23,16 @@ func (s *UserService) RegistrationUser(userForm appl_row.UserCreate) (int, error
 	return s.repo.RegistrationUser(userForm)
 }
 
+func (s *UserService) GetUserLanguage(teleId int64) ([]appl_row.GetUserLanguageResponse, int, error) {
+	return s.repo.GetUserLanguage(teleId)
+}
+
 func (s *UserService) UpdateLanguage(userForm appl_row.UserUpdateLanguage) (int, error) {
 	return s.repo.UpdateLanguage(userForm)
 }
 
-func (s *UserService) CheckIsLanguage(teleId int64) ([]appl_row.CheckUserLanguageResponse, int, error) {
-	return s.repo.CheckIsLanguage(teleId)
+func (s *UserService) GetUserCurrency(teleId int64) ([]appl_row.GetUserCurrencyResponse, int, error) {
+	return s.repo.GetUserCurrency(teleId)
 }
 
 func (s *UserService) UpdateCurrency(userFormCurrency appl_row.UserUpdateCurrency) (int, error) {
