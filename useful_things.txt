@@ -1,5 +1,6 @@
 request GET:
 curl http://localhost:8080/api-v1/payment/getAll
+curl http://localhost:8080/api-v1/collection/getAll
 
 request POST:
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "tele_name": "тест"}'   http://localhost:8080/api-v1/user/registration
@@ -14,3 +15,4 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"tele
 curl --header "Content-Type: application/json"   --request POST   --data '{"name": "btc", "value": "1Hu4vvRkemASsc6nVebmYVcewrqrFQj7JQ"}'   http://localhost:8080/api-v1/payment/createPayment
 curl --header "Content-Type: application/json"   --request POST   --data '{"name": "eth", "value": "0xafec3690faea81b99e9d597bae30cf7cf24473b1"}'   http://localhost:8080/api-v1/payment/createPayment
 curl --header "Content-Type: application/json"   --request POST   --data '{"name": "usdt", "value": "0xafec3690faea81b99e9d597bae30cf7cf24473b1"}'   http://localhost:8080/api-v1/payment/createPayment
+curl --header "Content-Type: application/json"   --request POST   --data '{"name": "CryptoKitties", "count": 0}'   http://localhost:8080/api-v1/collection/createCollection

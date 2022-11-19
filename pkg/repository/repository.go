@@ -22,14 +22,21 @@ type TodoPayment interface {
 	GetAllPayments() ([]appl_row.Payment, int, error)
 }
 
+type TodoCollection interface {
+	CreateCollection(collectionForm appl_row.CollectionCreate) (int, error)
+	GetAllCollections() ([]appl_row.Collection, int, error)
+}
+
 type Repository struct {
 	TodoUser
 	TodoPayment
+	TodoCollection
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		TodoUser:    NewUserPostgres(db),
-		TodoPayment: NewPaymentPostgres(db),
+		TodoUser:       NewUserPostgres(db),
+		TodoPayment:    NewPaymentPostgres(db),
+		TodoCollection: NewCollectionPostgres(db),
 	}
 }
