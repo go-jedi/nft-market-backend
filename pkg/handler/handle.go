@@ -28,6 +28,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/user/updateCurrency", h.updateCurrency)   // Изменить валюту пользователя
 		api.POST("/user/checkIsTerms", h.checkIsTerms)       // проверка на пользовательское соглашение
 		api.POST("/user/agreeTerms", h.agreeTerms)           // согласие пользователя с пользовательским соглашением
+		api.POST("/user/getUserProfile", h.getUserProfile)   // получение профиля пользователя
+		api.POST("payment/createPayment", h.createPayment)   // создание платёжки
+		api.GET("/payment/getAll", h.getAllPayments)         // получение всех платёжек
 	}
 
 	return router

@@ -10,13 +10,13 @@ type UserUpdateLanguage struct {
 	Lang   string `json:"lang"`
 }
 
-type GetUserLanguageResponse struct {
+type UserLanguage struct {
 	Id     int    `json:"id"`
 	TeleId int64  `json:"tele_id"`
 	Lang   string `json:"lang"`
 }
 
-type GetUserCurrencyResponse struct {
+type UserCurrency struct {
 	Id       int    `json:"id"`
 	TeleId   int64  `json:"tele_id"`
 	Currency string `json:"currency"`
@@ -25,4 +25,12 @@ type GetUserCurrencyResponse struct {
 type UserUpdateCurrency struct {
 	TeleId   int64  `json:"tele_id"`
 	Currency string `json:"currency"`
+}
+
+type UserProfile struct {
+	Id           int   `json:"id"`
+	TeleId       int64 `json:"tele_id"`
+	Balance      int64 `json:"balance"`
+	Conclusion   int64 `json:"conclusion"`
+	Verification bool  `json:"verification"`
 }

@@ -13,6 +13,9 @@ BEGIN
     IF _u.id ISNULL THEN
         INSERT INTO users(uid, tele_id, tele_name)
         VALUES(_uid, (js->>'tele_id')::BIGINT, js->>'tele_name');
+
+		  INSERT INTO users_base(tele_id)
+		  VALUES((js->>'tele_id')::BIGINT);
     END IF;
 END;
 $function$

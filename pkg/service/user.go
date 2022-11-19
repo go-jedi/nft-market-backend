@@ -23,7 +23,7 @@ func (s *UserService) RegistrationUser(userForm appl_row.UserCreate) (int, error
 	return s.repo.RegistrationUser(userForm)
 }
 
-func (s *UserService) GetUserLanguage(teleId int64) ([]appl_row.GetUserLanguageResponse, int, error) {
+func (s *UserService) GetUserLanguage(teleId int64) ([]appl_row.UserLanguage, int, error) {
 	return s.repo.GetUserLanguage(teleId)
 }
 
@@ -31,7 +31,7 @@ func (s *UserService) UpdateLanguage(userForm appl_row.UserUpdateLanguage) (int,
 	return s.repo.UpdateLanguage(userForm)
 }
 
-func (s *UserService) GetUserCurrency(teleId int64) ([]appl_row.GetUserCurrencyResponse, int, error) {
+func (s *UserService) GetUserCurrency(teleId int64) ([]appl_row.UserCurrency, int, error) {
 	return s.repo.GetUserCurrency(teleId)
 }
 
@@ -45,4 +45,8 @@ func (s *UserService) CheckIsTerms(teleId int64) (bool, int, error) {
 
 func (s *UserService) AgreeTerms(teleId int64) (int, error) {
 	return s.repo.AgreeTerms(teleId)
+}
+
+func (s *UserService) GetUserProfile(teleId int64) ([]appl_row.UserProfile, int, error) {
+	return s.repo.GetUserProfile(teleId)
 }

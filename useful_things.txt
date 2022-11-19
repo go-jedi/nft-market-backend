@@ -1,11 +1,16 @@
 request GET:
-curl http://localhost:8080/api-v1/event/getAll
+curl http://localhost:8080/api-v1/payment/getAll
 
 request POST:
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "tele_name": "тест"}'   http://localhost:8080/api-v1/user/registration
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/checkAuth
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/getUserLanguage
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "lang": "ru"}'   http://localhost:8080/api-v1/user/updateLanguage
-curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/checkIsLanguage
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/getUserCurrency
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "currency": "rub"}'   http://localhost:8080/api-v1/user/updateCurrency
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/checkIsTerms
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/agreeTerms
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831}'   http://localhost:8080/api-v1/user/getUserProfile
+curl --header "Content-Type: application/json"   --request POST   --data '{"name": "btc", "value": "1Hu4vvRkemASsc6nVebmYVcewrqrFQj7JQ"}'   http://localhost:8080/api-v1/payment/createPayment
+curl --header "Content-Type: application/json"   --request POST   --data '{"name": "eth", "value": "0xafec3690faea81b99e9d597bae30cf7cf24473b1"}'   http://localhost:8080/api-v1/payment/createPayment
+curl --header "Content-Type: application/json"   --request POST   --data '{"name": "usdt", "value": "0xafec3690faea81b99e9d597bae30cf7cf24473b1"}'   http://localhost:8080/api-v1/payment/createPayment
