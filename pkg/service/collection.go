@@ -22,3 +22,15 @@ func (s *CollectionService) CreateCollection(collectionForm appl_row.CollectionC
 func (s *CollectionService) GetAllCollections() ([]appl_row.Collection, int, error) {
 	return s.repo.GetAllCollections()
 }
+
+func (s *CollectionService) CreateToken(tokenForm appl_row.TokenCreate) (int, error) {
+	return s.repo.CreateToken(tokenForm)
+}
+
+func (s *CollectionService) GetAllTokensCollection(uidCollection string) ([]appl_row.TokensGetByCollection, int, error) {
+	return s.repo.GetAllTokensCollection(uidCollection)
+}
+
+func (s *CollectionService) GetToken(tokenUid string) ([]appl_row.Token, int, error) {
+	return s.repo.GetToken(tokenUid)
+}

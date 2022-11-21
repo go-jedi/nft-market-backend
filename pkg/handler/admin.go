@@ -7,10 +7,9 @@ import (
 	"github.com/rob-bender/nft-market-backend/appl_row"
 )
 
-func (h *Handler) createCollection(c *gin.Context) {
+func (h *Handler) checkIsAdmin(c *gin.Context) {
 	type Body struct {
-		Name  string `json:"name"`
-		Count int    `json:"count"`
+		TeleId int64 `json:"tele_id"`
 	}
 	var body Body
 	if err := c.BindJSON(&body); err != nil {
@@ -20,7 +19,44 @@ func (h *Handler) createCollection(c *gin.Context) {
 		})
 		return
 	}
-	statusCode, err := h.services.CreateCollection(appl_row.CollectionCreate(body))
+	res, statusCode, err := h.services.CheckIsAdmin(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if res {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователь является администратором",
+			"result":  res,
+		})
+	} else {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователя не является администратором",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) createReferral(c *gin.Context) {
+	type Body struct {
+		TeleId        int64  `json:"tele_id"`
+		TeleName      string `json:"tele_name"`
+		AdminReferral int64  `json:"admin_referral"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.CreateReferral(appl_row.ReferralCreate(body))
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -30,12 +66,23 @@ func (h *Handler) createCollection(c *gin.Context) {
 	}
 	c.JSON(statusCode, map[string]interface{}{
 		"status":  statusCode,
-		"message": "успешное создание коллекции",
+		"message": "успешная создание рефералки",
 	})
 }
 
-func (h *Handler) getAllCollections(c *gin.Context) {
-	res, statusCode, err := h.services.GetAllCollections()
+func (h *Handler) getUsersReferral(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.GetUsersReferral(body.TeleId)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -46,25 +93,21 @@ func (h *Handler) getAllCollections(c *gin.Context) {
 	if len(res) > 0 {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"status":  http.StatusOK,
-			"message": "успешное получение имеющихся коллекций",
+			"message": "успешное получение пользователей рефералки администратора",
 			"result":  res,
 		})
 	} else {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"status":  http.StatusOK,
-			"message": "успешное получение имеющихся коллекций",
-			"result":  []int{},
+			"message": "успешное получение пользователей рефералки администратора",
+			"result":  res,
 		})
 	}
 }
 
-func (h *Handler) createToken(c *gin.Context) {
+func (h *Handler) adminGetUserProfile(c *gin.Context) {
 	type Body struct {
-		Name          string  `json:"name"`
-		Price         float64 `json:"price"`
-		Author        string  `json:"author"`
-		Blockchain    string  `json:"blockchain"`
-		UidCollection string  `json:"uid_collection"`
+		TeleId int64 `json:"tele_id"`
 	}
 	var body Body
 	if err := c.BindJSON(&body); err != nil {
@@ -74,7 +117,42 @@ func (h *Handler) createToken(c *gin.Context) {
 		})
 		return
 	}
-	statusCode, err := h.services.CreateToken(appl_row.TokenCreate(body))
+	res, statusCode, err := h.services.AdminGetUserProfile(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if len(res) > 0 {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение профиля пользователя",
+			"result":  res,
+		})
+	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение пользователей профиля пользователя",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) updatePremium(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.UpdatePremium(body.TeleId)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -84,76 +162,6 @@ func (h *Handler) createToken(c *gin.Context) {
 	}
 	c.JSON(statusCode, map[string]interface{}{
 		"status":  statusCode,
-		"message": "успешное создание токена",
+		"message": "успешная изменение премиума пользователя",
 	})
-}
-
-func (h *Handler) getAllTokensCollection(c *gin.Context) {
-	type Body struct {
-		UidCollection string `json:"uid_collection"`
-	}
-	var body Body
-	if err := c.BindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status":  http.StatusBadRequest,
-			"message": "некорректно переданы данные в body",
-		})
-		return
-	}
-	res, statusCode, err := h.services.GetAllTokensCollection(body.UidCollection)
-	if err != nil {
-		c.JSON(statusCode, map[string]interface{}{
-			"status":  statusCode,
-			"message": err.Error(),
-		})
-		return
-	}
-	if len(res) > 0 {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status":  http.StatusOK,
-			"message": "успешное получение токенов коллекции",
-			"result":  res,
-		})
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status":  http.StatusOK,
-			"message": "успешное получение токенов коллекции",
-			"result":  []int{},
-		})
-	}
-}
-
-func (h *Handler) getToken(c *gin.Context) {
-	type Body struct {
-		TokenUid string `json:"token_uid"`
-	}
-	var body Body
-	if err := c.BindJSON(&body); err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status":  http.StatusBadRequest,
-			"message": "некорректно переданы данные в body",
-		})
-		return
-	}
-	res, statusCode, err := h.services.GetToken(body.TokenUid)
-	if err != nil {
-		c.JSON(statusCode, map[string]interface{}{
-			"status":  statusCode,
-			"message": err.Error(),
-		})
-		return
-	}
-	if len(res) > 0 {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status":  http.StatusOK,
-			"message": "успешное получение токена",
-			"result":  res,
-		})
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"status":  http.StatusOK,
-			"message": "успешное получение токена",
-			"result":  []int{},
-		})
-	}
 }
