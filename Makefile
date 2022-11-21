@@ -1,5 +1,9 @@
 .PHONY: run
-run: # билдить проект с помощью команды make
-	go run ./cmd/drug
+
+build:
+	go build -o ./.bin/bot cmd/bot/main.go
+
+run: build
+	./.bin/bot
 
 .DEFAULT_GOAL := run
