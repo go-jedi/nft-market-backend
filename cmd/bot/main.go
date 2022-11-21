@@ -21,7 +21,7 @@ func main() {
 		Port:     "5432",
 		Username: "postgres",
 		Password: "postgres",
-		DBName:   "bot",
+		DBName:   "nft_market",
 	})
 	if err != nil {
 		log.Fatalf("failed to initialize db: %s", err.Error())
