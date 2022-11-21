@@ -25,12 +25,24 @@ type TodoPayment interface {
 type TodoCollection interface {
 	CreateCollection(collectionForm appl_row.CollectionCreate) (int, error)
 	GetAllCollections() ([]appl_row.Collection, int, error)
+	CreateToken(tokenForm appl_row.TokenCreate) (int, error)
+	GetAllTokensCollection(uidCollection string) ([]appl_row.TokensGetByCollection, int, error)
+	GetToken(tokenUid string) ([]appl_row.Token, int, error)
+}
+
+type TodoAdmin interface {
+	CheckIsAdmin(teleId int64) (bool, int, error)
+	CreateReferral(referralForm appl_row.ReferralCreate) (int, error)
+	GetUsersReferral(teleId int64) ([]appl_row.Referral, int, error)
+	AdminGetUserProfile(teleId int64) ([]appl_row.AdminUserProfileGet, int, error)
+	UpdatePremium(teleId int64) (int, error)
 }
 
 type Repository struct {
 	TodoUser
 	TodoPayment
 	TodoCollection
+	TodoAdmin
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -38,5 +50,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		TodoUser:       NewUserPostgres(db),
 		TodoPayment:    NewPaymentPostgres(db),
 		TodoCollection: NewCollectionPostgres(db),
+		TodoAdmin:      NewAdminPostgres(db),
 	}
 }

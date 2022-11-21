@@ -31,6 +31,7 @@ type UserProfile struct {
 	Id           int   `json:"id"`
 	TeleId       int64 `json:"tele_id"`
 	Balance      int64 `json:"balance"`
+	IsPremium    bool  `json:"is_premium"`
 	Conclusion   int64 `json:"conclusion"`
 	Verification bool  `json:"verification"`
 }

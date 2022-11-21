@@ -11,7 +11,7 @@ BEGIN
 	(
 		SELECT json_agg(ag.*)::JSONB s
 		FROM (
-			SELECT ub.id, ub.tele_id, ub.balance, ub.conclusion, ub.verification
+			SELECT ub.id, ub.tele_id, ub.balance, ub.conclusion, ub.verification, ub.is_premium
 			FROM users_base ub
 			WHERE ub.tele_id = _tid
 		) ag
