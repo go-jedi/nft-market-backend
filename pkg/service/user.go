@@ -50,3 +50,7 @@ func (s *UserService) AgreeTerms(teleId int64) (int, error) {
 func (s *UserService) GetUserProfile(teleId int64) ([]appl_row.UserProfile, int, error) {
 	return s.repo.GetUserProfile(teleId)
 }
+
+func (s *UserService) GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, int, error) {
+	return s.repo.GetUserMinPrice(teleId)
+}

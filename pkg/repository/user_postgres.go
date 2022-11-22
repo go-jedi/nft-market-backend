@@ -30,12 +30,13 @@ func (r *UserPostgres) CheckAuth(teleId int64) (bool, int, error) {
 
 func (r *UserPostgres) RegistrationUser(userForm appl_row.UserCreate) (int, error) {
 	var uid string
+	var isRegisterRes bool
 	userFormJson, _ := json.Marshal(userForm)
 	err := r.db.QueryRow("SELECT uid($1)", 8).Scan(&uid)
 	if err != nil {
 		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции uid из базы данных, %s", err)
 	}
-	_, err = r.db.Exec("SELECT user_create($1, $2)", userFormJson, uid)
+	err = r.db.QueryRow("SELECT user_create($1, $2)", userFormJson, uid).Scan(&isRegisterRes)
 	if err != nil {
 		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_create из базы данных, %s", err)
 	}
@@ -117,4 +118,18 @@ func (r *UserPostgres) GetUserProfile(teleId int64) ([]appl_row.UserProfile, int
 		return []appl_row.UserProfile{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции GetUserProfile, %s", err)
 	}
 	return userProfile, http.StatusOK, nil
+}
+
+func (r *UserPostgres) GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, int, error) {
+	var userMinPrice []appl_row.UserMinPrice
+	var userMinPriceByte []byte
+	err := r.db.QueryRow("SELECT user_get_min_price($1)", teleId).Scan(&userMinPriceByte)
+	if err != nil {
+		return []appl_row.UserMinPrice{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_get_min_price из базы данных, %s", err)
+	}
+	err = json.Unmarshal(userMinPriceByte, &userMinPrice)
+	if err != nil {
+		return []appl_row.UserMinPrice{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции GetUserMinPrice, %s", err)
+	}
+	return userMinPrice, http.StatusOK, nil
 }

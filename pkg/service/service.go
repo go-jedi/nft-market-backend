@@ -15,6 +15,7 @@ type TodoUser interface {
 	CheckIsTerms(teleId int64) (bool, int, error)
 	AgreeTerms(teleId int64) (int, error)
 	GetUserProfile(teleId int64) ([]appl_row.UserProfile, int, error)
+	GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, int, error)
 }
 
 type TodoPayment interface {
@@ -33,9 +34,20 @@ type TodoCollection interface {
 type TodoAdmin interface {
 	CheckIsAdmin(teleId int64) (bool, int, error)
 	CreateReferral(referralForm appl_row.ReferralCreate) (int, error)
-	GetUsersReferral(teleId int64) ([]appl_row.Referral, int, error)
+	CheckUserReferral(teleId int64) ([]appl_row.CheckUserReferralGet, int, error)
+	GetUserReferral(teleId int64, teleIdUser int64) ([]appl_row.Referral, int, error)
+	GetUsersReferral(teleId int64, limit int) ([]appl_row.Referral, int, error)
 	AdminGetUserProfile(teleId int64) ([]appl_row.AdminUserProfileGet, int, error)
+	CheckIsPremium(teleId int64) (bool, int, error)
 	UpdatePremium(teleId int64) (int, error)
+	AdminUpdateMinimPrice(teleId int64, minPrice float64) (int, error)
+	CheckIsVerification(teleId int64) (bool, int, error)
+	UpdateVerification(teleId int64) (int, error)
+	AdminAddBalance(teleId int64, needPrice float64) (int, error)
+	AdminChangeMinUser(teleId int64, minPrice float64) (int, error)
+	AdminChangeBalance(teleId int64, needPrice float64) (int, error)
+	CheckIsBlockUser(teleId int64) (bool, int, error)
+	AdminBlockUser(teleId int64) (int, error)
 }
 
 type Service struct {

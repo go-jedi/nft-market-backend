@@ -44,8 +44,9 @@ func (h *Handler) checkAuth(c *gin.Context) {
 
 func (h *Handler) registrationUser(c *gin.Context) {
 	type Body struct {
-		TeleId   int64  `json:"tele_id"`
-		TeleName string `json:"tele_name"`
+		TeleId      int64  `json:"tele_id"`
+		TeleName    string `json:"tele_name"`
+		TeleIdAdmin int64  `json:"tele_id_admin"`
 	}
 	var body Body
 	if err := c.BindJSON(&body); err != nil {
@@ -284,6 +285,41 @@ func (h *Handler) getUserProfile(c *gin.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"status":  http.StatusOK,
 			"message": "успешное получение профиля пользователя",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) getUserMinPrice(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.GetUserMinPrice(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if len(res) > 0 {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение минималки пользователя",
+			"result":  res,
+		})
+	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение минималки пользователя",
 			"result":  res,
 		})
 	}

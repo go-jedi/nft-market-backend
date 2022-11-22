@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION admin_get_users_ref(_tid BIGINT)
+CREATE OR REPLACE FUNCTION admin_get_users_ref(_tid BIGINT, _lmt INTEGER)
 	RETURNS json
 	LANGUAGE plpgsql
 AS $function$
@@ -14,6 +14,7 @@ BEGIN
 			SELECT r.id, r.tele_id, r.tele_name, r.created, r.admin_referral
 			FROM referral r
 			WHERE r.admin_referral = _tid
+			ORDER BY r.id DESC LIMIT _lmt
 		) ag
 	) agur
 	INTO _response;

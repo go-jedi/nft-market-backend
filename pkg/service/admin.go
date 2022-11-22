@@ -23,14 +23,58 @@ func (s *AdminService) CreateReferral(referralForm appl_row.ReferralCreate) (int
 	return s.repo.CreateReferral(referralForm)
 }
 
-func (s *AdminService) GetUsersReferral(teleId int64) ([]appl_row.Referral, int, error) {
-	return s.repo.GetUsersReferral(teleId)
+func (s *AdminService) CheckUserReferral(teleId int64) ([]appl_row.CheckUserReferralGet, int, error) {
+	return s.repo.CheckUserReferral(teleId)
+}
+
+func (s *AdminService) GetUserReferral(teleId int64, teleIdUser int64) ([]appl_row.Referral, int, error) {
+	return s.repo.GetUserReferral(teleId, teleIdUser)
+}
+
+func (s *AdminService) GetUsersReferral(teleId int64, limit int) ([]appl_row.Referral, int, error) {
+	return s.repo.GetUsersReferral(teleId, limit)
 }
 
 func (s *AdminService) AdminGetUserProfile(teleId int64) ([]appl_row.AdminUserProfileGet, int, error) {
 	return s.repo.AdminGetUserProfile(teleId)
 }
 
+func (s *AdminService) CheckIsPremium(teleId int64) (bool, int, error) {
+	return s.repo.CheckIsPremium(teleId)
+}
+
 func (s *AdminService) UpdatePremium(teleId int64) (int, error) {
 	return s.repo.UpdatePremium(teleId)
+}
+
+func (s *AdminService) CheckIsVerification(teleId int64) (bool, int, error) {
+	return s.repo.CheckIsVerification(teleId)
+}
+
+func (s *AdminService) UpdateVerification(teleId int64) (int, error) {
+	return s.repo.UpdateVerification(teleId)
+}
+
+func (s *AdminService) AdminUpdateMinimPrice(teleId int64, minPrice float64) (int, error) {
+	return s.repo.AdminUpdateMinimPrice(teleId, minPrice)
+}
+
+func (s *AdminService) AdminAddBalance(teleId int64, needPrice float64) (int, error) {
+	return s.repo.AdminAddBalance(teleId, needPrice)
+}
+
+func (s *AdminService) AdminChangeMinUser(teleId int64, minPrice float64) (int, error) {
+	return s.repo.AdminChangeMinUser(teleId, minPrice)
+}
+
+func (s *AdminService) AdminChangeBalance(teleId int64, needPrice float64) (int, error) {
+	return s.repo.AdminChangeBalance(teleId, needPrice)
+}
+
+func (s *AdminService) CheckIsBlockUser(teleId int64) (bool, int, error) {
+	return s.repo.CheckIsBlockUser(teleId)
+}
+
+func (s *AdminService) AdminBlockUser(teleId int64) (int, error) {
+	return s.repo.AdminBlockUser(teleId)
 }
