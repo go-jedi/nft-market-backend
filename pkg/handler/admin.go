@@ -70,7 +70,7 @@ func (h *Handler) createReferral(c *gin.Context) {
 	})
 }
 
-func (h *Handler) getUsersReferral(c *gin.Context) {
+func (h *Handler) checkUserReferral(c *gin.Context) {
 	type Body struct {
 		TeleId int64 `json:"tele_id"`
 	}
@@ -82,7 +82,79 @@ func (h *Handler) getUsersReferral(c *gin.Context) {
 		})
 		return
 	}
-	res, statusCode, err := h.services.GetUsersReferral(body.TeleId)
+	res, statusCode, err := h.services.CheckUserReferral(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if len(res) > 0 {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение количества пользователей по рефералки администратора",
+			"result":  res,
+		})
+	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение количества пользователей по рефералки администратора",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) getUserReferral(c *gin.Context) {
+	type Body struct {
+		TeleId     int64 `json:"tele_id"`
+		TeleIdUser int64 `json:"tele_id_user"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.GetUserReferral(body.TeleId, body.TeleIdUser)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if len(res) > 0 {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение пользователя рефералки администратора",
+			"result":  res,
+		})
+	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешное получение пользователя рефералки администратора",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) getUsersReferral(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+		Limit  int   `json:"limit"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.GetUsersReferral(body.TeleId, body.Limit)
 	if err != nil {
 		c.JSON(statusCode, map[string]interface{}{
 			"status":  statusCode,
@@ -140,6 +212,41 @@ func (h *Handler) adminGetUserProfile(c *gin.Context) {
 	}
 }
 
+func (h *Handler) checkIsPremium(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.CheckIsPremium(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if res {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователь со статусом премиум",
+			"result":  res,
+		})
+	} else {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователя без статуса премиум",
+			"result":  res,
+		})
+	}
+}
+
 func (h *Handler) updatePremium(c *gin.Context) {
 	type Body struct {
 		TeleId int64 `json:"tele_id"`
@@ -163,5 +270,235 @@ func (h *Handler) updatePremium(c *gin.Context) {
 	c.JSON(statusCode, map[string]interface{}{
 		"status":  statusCode,
 		"message": "успешная изменение премиума пользователя",
+	})
+}
+
+func (h *Handler) checkIsVerification(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.CheckIsVerification(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if res {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователь является верифицированным",
+			"result":  res,
+		})
+	} else {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователя не является верифицированным",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) updateVerification(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.UpdateVerification(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешная изменение верификации пользователя",
+	})
+}
+
+func (h *Handler) adminUpdateMinimPrice(c *gin.Context) {
+	type Body struct {
+		TeleId   int64   `json:"tele_id"`
+		MinPrice float64 `json:"min_price"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.AdminUpdateMinimPrice(body.TeleId, body.MinPrice)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешная изменение минималки у администратора",
+	})
+}
+
+func (h *Handler) adminAddBalance(c *gin.Context) {
+	type Body struct {
+		TeleId    int64   `json:"tele_id"`
+		NeedPrice float64 `json:"need_price"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.AdminAddBalance(body.TeleId, body.NeedPrice)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешное пополнение баланса пользователя",
+	})
+}
+
+func (h *Handler) adminChangeMinUser(c *gin.Context) {
+	type Body struct {
+		TeleId   int64   `json:"tele_id"`
+		MinPrice float64 `json:"min_price"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.AdminChangeMinUser(body.TeleId, body.MinPrice)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешное изменение минималки пользователя",
+	})
+}
+
+func (h *Handler) adminChangeBalance(c *gin.Context) {
+	type Body struct {
+		TeleId    int64   `json:"tele_id"`
+		NeedPrice float64 `json:"need_price"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.AdminChangeBalance(body.TeleId, body.NeedPrice)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешное изменение баланса пользователя",
+	})
+}
+
+func (h *Handler) checkIsBlockUser(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.CheckIsBlockUser(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if res {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователь является заблокированным",
+			"result":  res,
+		})
+	} else {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "пользователя не является заблокированным",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) adminBlockUser(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.AdminBlockUser(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешная блокировка пользователя",
 	})
 }

@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS users (
     uid VARCHAR(255) NOT NULL,
     tele_id BIGINT NOT NULL,
     tele_name VARCHAR(255) NOT NULL,
+	 minim_price NUMERIC(10,2) NOT NULL,
+	 is_block BOOLEAN NOT NULL DEFAULT 'f',
     created TIMESTAMP NOT NULL DEFAULT now(),
 	 currency VARCHAR(255),
 	 lang VARCHAR(255),
@@ -12,10 +14,18 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS users_base(
     id SERIAL PRIMARY KEY NOT NULL,
     tele_id BIGINT NOT NULL,
-    balance BIGINT NOT NULL DEFAULT 0,
-    conclusion BIGINT NOT NULL DEFAULT 0,
+    balance NUMERIC(10,2) DEFAULT 0,
+    conclusion NUMERIC(10,2) DEFAULT 0,
 	 is_premium BOOLEAN NOT NULL DEFAULT 'f',
     verification BOOLEAN NOT NULL DEFAULT 'f'
+);
+
+CREATE TABLE IF NOT EXISTS referral(
+	id SERIAL PRIMARY KEY NOT NULL,
+	tele_id BIGINT NOT NULL,
+	tele_name VARCHAR(255) NOT NULL,
+	created TIMESTAMP NOT NULL DEFAULT now(),
+	admin_referral BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS collections (
@@ -38,15 +48,8 @@ CREATE TABLE IF NOT EXISTS tokens (
 CREATE TABLE IF NOT EXISTS admins(
     id SERIAL PRIMARY KEY NOT NULL,
     tele_id BIGINT NOT NULL,
+	 minim_price NUMERIC(10,2) DEFAULT 20,
 	 count_referrals BIGINT NOT NULL DEFAULT 0
-);
-
-CREATE TABLE IF NOT EXISTS referral(
-	id SERIAL PRIMARY KEY NOT NULL,
-	tele_id BIGINT NOT NULL,
-	tele_name VARCHAR(255) NOT NULL,
-	created TIMESTAMP NOT NULL DEFAULT now(),
-	admin_referral BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS payments (

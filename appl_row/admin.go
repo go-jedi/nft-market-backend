@@ -15,11 +15,15 @@ type Referral struct {
 }
 
 type AdminUserProfileGet struct {
-	Id           int64  `json:"id"`
-	TeleId       int64  `json:"tele_id"`
-	TeleName     string `json:"tele_name"`
-	Balance      int64  `json:"balance"`
-	IsPremium    bool   `json:"is_premium"`
-	Verification bool   `json:"verification"`
-	Conclusion   int64  `json:"conclusion"`
+	Id           int64   `json:"id"`
+	TeleId       int64   `json:"tele_id"`
+	TeleName     string  `json:"tele_name"`
+	Balance      float64 `json:"balance"`
+	IsPremium    bool    `json:"is_premium"`
+	Verification bool    `json:"verification"`
+	Conclusion   float64 `json:"conclusion"`
+}
+
+type CheckUserReferralGet struct {
+	Count int64 `json:"count"`
 }

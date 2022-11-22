@@ -20,10 +20,6 @@ BEGIN
 	WHERE tele_id = _tid
 	INTO _ub;
 
-	IF _ub.is_premium = TRUE THEN
-		UPDATE users_base SET is_premium = FALSE WHERE tele_id = _tid;
-	ELSE
-		UPDATE users_base SET is_premium = TRUE WHERE tele_id = _tid;
-	END IF;
+	UPDATE users_base SET is_premium = TRUE WHERE tele_id = _tid;
 END;
 $function$

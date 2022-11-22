@@ -34,14 +34,41 @@ func (r *AdminPostgres) CreateReferral(referralForm appl_row.ReferralCreate) (in
 	if err != nil {
 		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_create_referal из базы данных, %s", err)
 	}
-
 	return http.StatusOK, nil
 }
 
-func (r *AdminPostgres) GetUsersReferral(teleId int64) ([]appl_row.Referral, int, error) {
+func (r *AdminPostgres) CheckUserReferral(teleId int64) ([]appl_row.CheckUserReferralGet, int, error) {
+	var countUserReferral []appl_row.CheckUserReferralGet
+	var countUserReferralByte []byte
+	err := r.db.QueryRow("SELECT admin_check_user_ref($1)", teleId).Scan(&countUserReferralByte)
+	if err != nil {
+		return []appl_row.CheckUserReferralGet{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_check_user_ref из базы данных, %s", err)
+	}
+	err = json.Unmarshal(countUserReferralByte, &countUserReferral)
+	if err != nil {
+		return []appl_row.CheckUserReferralGet{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции CheckUserReferral, %s", err)
+	}
+	return countUserReferral, http.StatusOK, nil
+}
+
+func (r *AdminPostgres) GetUserReferral(teleId int64, teleIdUser int64) ([]appl_row.Referral, int, error) {
+	var userReferralAdmin []appl_row.Referral
+	var userReferralAdminByte []byte
+	err := r.db.QueryRow("SELECT admin_get_user_ref($1, $2)", teleId, teleIdUser).Scan(&userReferralAdminByte)
+	if err != nil {
+		return []appl_row.Referral{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_get_user_ref из базы данных, %s", err)
+	}
+	err = json.Unmarshal(userReferralAdminByte, &userReferralAdmin)
+	if err != nil {
+		return []appl_row.Referral{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции GetUserReferral, %s", err)
+	}
+	return userReferralAdmin, http.StatusOK, nil
+}
+
+func (r *AdminPostgres) GetUsersReferral(teleId int64, limit int) ([]appl_row.Referral, int, error) {
 	var usersReferralAdmin []appl_row.Referral
 	var usersReferralAdminByte []byte
-	err := r.db.QueryRow("SELECT admin_get_users_ref($1)", teleId).Scan(&usersReferralAdminByte)
+	err := r.db.QueryRow("SELECT admin_get_users_ref($1, $2)", teleId, limit).Scan(&usersReferralAdminByte)
 	if err != nil {
 		return []appl_row.Referral{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_get_users_ref из базы данных, %s", err)
 	}
@@ -49,7 +76,6 @@ func (r *AdminPostgres) GetUsersReferral(teleId int64) ([]appl_row.Referral, int
 	if err != nil {
 		return []appl_row.Referral{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции GetUsersReferral, %s", err)
 	}
-
 	return usersReferralAdmin, http.StatusOK, nil
 }
 
@@ -67,10 +93,85 @@ func (r *AdminPostgres) AdminGetUserProfile(teleId int64) ([]appl_row.AdminUserP
 	return userProfile, http.StatusOK, nil
 }
 
+func (r *AdminPostgres) CheckIsPremium(teleId int64) (bool, int, error) {
+	var isPremium bool
+	err := r.db.QueryRow("SELECT admin_check_premium($1)", teleId).Scan(&isPremium)
+	if err != nil {
+		return false, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_check_premium из базы данных, %s", err)
+	}
+	return isPremium, http.StatusOK, nil
+}
+
 func (r *AdminPostgres) UpdatePremium(teleId int64) (int, error) {
 	_, err := r.db.Exec("SELECT user_update_premium($1)", teleId)
 	if err != nil {
 		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_update_premium из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}
+
+func (r *AdminPostgres) CheckIsVerification(teleId int64) (bool, int, error) {
+	var isVerification bool
+	err := r.db.QueryRow("SELECT admin_check_verified($1)", teleId).Scan(&isVerification)
+	if err != nil {
+		return false, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_check_verified из базы данных, %s", err)
+	}
+	return isVerification, http.StatusOK, nil
+}
+
+func (r *AdminPostgres) UpdateVerification(teleId int64) (int, error) {
+	_, err := r.db.Exec("SELECT user_update_verification($1)", teleId)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_update_verification из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}
+
+func (r *AdminPostgres) AdminUpdateMinimPrice(teleId int64, minPrice float64) (int, error) {
+	_, err := r.db.Exec("SELECT admin_update_min_price($1, $2)", teleId, minPrice)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_update_min_price из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}
+
+func (r *AdminPostgres) AdminAddBalance(teleId int64, needPrice float64) (int, error) {
+	_, err := r.db.Exec("SELECT admin_add_balance($1, $2)", teleId, needPrice)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_add_balance из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}
+
+func (r *AdminPostgres) AdminChangeMinUser(teleId int64, minPrice float64) (int, error) {
+	_, err := r.db.Exec("SELECT admin_change_min_user($1, $2)", teleId, minPrice)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_change_min_user из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}
+
+func (r *AdminPostgres) AdminChangeBalance(teleId int64, needPrice float64) (int, error) {
+	_, err := r.db.Exec("SELECT admin_change_balance($1, $2)", teleId, needPrice)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_change_balance из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}
+
+func (r *AdminPostgres) CheckIsBlockUser(teleId int64) (bool, int, error) {
+	var isBlockUser bool
+	err := r.db.QueryRow("SELECT admin_check_block_user($1)", teleId).Scan(&isBlockUser)
+	if err != nil {
+		return false, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_check_block_user из базы данных, %s", err)
+	}
+	return isBlockUser, http.StatusOK, nil
+}
+
+func (r *AdminPostgres) AdminBlockUser(teleId int64) (int, error) {
+	_, err := r.db.Exec("SELECT admin_block_user($1)", teleId)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_block_user из базы данных, %s", err)
 	}
 	return http.StatusOK, nil
 }
