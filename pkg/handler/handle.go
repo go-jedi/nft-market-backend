@@ -20,6 +20,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api-v1")
 	{
+		api.GET("/user/exchangeRates", h.exchangeRates)                          // получение обменных курсов
 		api.POST("/user/checkAuth", h.checkAuth)                                 // проверка на регистрацию пользователя
 		api.POST("/user/registration", h.registrationUser)                       // Регистрация пользователя
 		api.POST("/user/getUserLanguage", h.getUserLanguage)                     // Получить выбранный язык пользователя
@@ -30,6 +31,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/user/agreeTerms", h.agreeTerms)                               // согласие пользователя с пользовательским соглашением
 		api.POST("/user/getUserProfile", h.getUserProfile)                       // получение профиля пользователя
 		api.POST("/user/getUserMinPrice", h.getUserMinPrice)                     // получение минималки пользователя
+		api.POST("/user/getAdminByUser", h.getAdminByUser)                       // получить закрепленного за пользователем администратора
 		api.GET("/payment/getAll", h.getAllPayments)                             // получение всех платёжек
 		api.POST("/payment/createPayment", h.createPayment)                      // создание платёжки
 		api.GET("/collection/getAll", h.getAllCollections)                       // получение всех коллекций
@@ -53,6 +55,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/admin/adminChangeBalance", h.adminChangeBalance)              // изменение баланса пользователя
 		api.POST("/admin/checkIsBlockUser", h.checkIsBlockUser)                  // проверка на блокировку пользователя
 		api.POST("/admin/blockUser", h.adminBlockUser)                           // проверка на блокировку пользователя
+		api.POST("/depot/createDepot", h.createDepot)                            // создание депа
 	}
 
 	return router

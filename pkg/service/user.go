@@ -15,6 +15,10 @@ func NewUserService(r repository.TodoUser) *UserService {
 	}
 }
 
+func (s *UserService) GetAllExchangeRates() ([]appl_row.ExchangeRatesGet, int, error) {
+	return s.repo.GetAllExchangeRates()
+}
+
 func (s *UserService) CheckAuth(teleId int64) (bool, int, error) {
 	return s.repo.CheckAuth(teleId)
 }
@@ -53,4 +57,8 @@ func (s *UserService) GetUserProfile(teleId int64) ([]appl_row.UserProfile, int,
 
 func (s *UserService) GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, int, error) {
 	return s.repo.GetUserMinPrice(teleId)
+}
+
+func (s *UserService) GetAdminByUser(teleId int64) ([]appl_row.AdminByUser, int, error) {
+	return s.repo.GetAdminByUser(teleId)
 }

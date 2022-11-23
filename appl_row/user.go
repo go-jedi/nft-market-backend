@@ -1,5 +1,11 @@
 package appl_row
 
+type ExchangeRatesGet struct {
+	Id    int     `json:"id"`
+	Name  string  `json:"name"`
+	Price float64 `json:"price"`
+}
+
 type UserCreate struct {
 	TeleId      int64  `json:"tele_id"`
 	TeleName    string `json:"tele_name"`
@@ -39,4 +45,9 @@ type UserProfile struct {
 
 type UserMinPrice struct {
 	MinimPrice float64 `json:"minim_price"`
+}
+
+type AdminByUser struct {
+	TeleId   int64  `json:"tele_id"`
+	TeleName string `json:"tele_name"`
 }

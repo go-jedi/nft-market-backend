@@ -1,6 +1,8 @@
 DROP TABLE users;
 DROP TABLE users_base;
 DROP TABLE referral;
+DROP TABLE depots;
+DROP TABLE exchange_rates;
 DROP TABLE admins;
 DROP TABLE collections;
 DROP TABLE tokens;

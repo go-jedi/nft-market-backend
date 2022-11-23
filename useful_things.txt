@@ -1,6 +1,7 @@
 request GET:
-curl http://localhost:8000/api-v1/payment/getAll
+curl http://195.211.99.62:8000/api-v1/payment/getAll
 curl http://localhost:8000/api-v1/collection/getAll
+curl http://localhost:8000/api-v1/user/exchangeRates
 
 request POST:
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5736117831, "tele_name": "тест"}'   http://localhost:8000/api-v1/user/registration
@@ -28,6 +29,8 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"tele
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5349047668, "min_price": 150}'   http://localhost:8000/api-v1/admin/adminChangeMinUser
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5349047668, "need_price": 100}'   http://localhost:8000/api-v1/admin/adminChangeBalance
 curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5349047668}'   http://localhost:8000/api-v1/admin/checkIsPremium
+curl --header "Content-Type: application/json"   --request POST   --data '{"tele_id": 5349047668}'   http://localhost:8000/api-v1/user/getAdminByUser
+curl --header "Content-Type: application/json"   --request POST   --data '{"mammoth_id": 5349047668, "mammoth_username":"sid_b0y", "worker_id": 5736117831, "worker_username": "rob_bender", "amount": 150}'   http://localhost:8000/api-v1/depot/createDepot
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"name": "Cryptopunks", "count": 0}'   http://localhost:8000/api-v1/collection/createCollection
 curl --header "Content-Type: application/json"   --request POST   --data '{"name": "CryptoKitties", "count": 0}'   http://localhost:8000/api-v1/collection/createCollection

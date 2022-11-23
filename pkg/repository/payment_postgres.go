@@ -28,7 +28,6 @@ func (r *PaymentPostgres) CreatePayment(paymentForm appl_row.PaymentCreate) (int
 	if err != nil {
 		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции payment_create из базы данных, %s", err)
 	}
-
 	return http.StatusOK, nil
 }
 
