@@ -6,6 +6,7 @@ import (
 )
 
 type TodoUser interface {
+	GetAllExchangeRates() ([]appl_row.ExchangeRatesGet, int, error)
 	CheckAuth(teleId int64) (bool, int, error)
 	RegistrationUser(userForm appl_row.UserCreate) (int, error)
 	GetUserLanguage(teleId int64) ([]appl_row.UserLanguage, int, error)
@@ -16,6 +17,7 @@ type TodoUser interface {
 	AgreeTerms(teleId int64) (int, error)
 	GetUserProfile(teleId int64) ([]appl_row.UserProfile, int, error)
 	GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, int, error)
+	GetAdminByUser(teleId int64) ([]appl_row.AdminByUser, int, error)
 }
 
 type TodoPayment interface {
@@ -50,11 +52,16 @@ type TodoAdmin interface {
 	AdminBlockUser(teleId int64) (int, error)
 }
 
+type TodoDepot interface {
+	CreateDepot(depotForm appl_row.DepotCreate) (int, error)
+}
+
 type Service struct {
 	TodoUser
 	TodoPayment
 	TodoCollection
 	TodoAdmin
+	TodoDepot
 }
 
 func NewService(r *repository.Repository) *Service {
@@ -63,5 +70,6 @@ func NewService(r *repository.Repository) *Service {
 		TodoPayment:    NewPaymentService(r.TodoPayment),
 		TodoCollection: NewCollectionService(r.TodoCollection),
 		TodoAdmin:      NewAdminService(r.TodoAdmin),
+		TodoDepot:      NewDepotService(r.TodoDepot),
 	}
 }

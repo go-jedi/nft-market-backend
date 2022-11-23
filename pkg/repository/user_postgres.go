@@ -19,6 +19,20 @@ func NewUserPostgres(db *sqlx.DB) *UserPostgres {
 	}
 }
 
+func (r *UserPostgres) GetAllExchangeRates() ([]appl_row.ExchangeRatesGet, int, error) {
+	var exchangeRates []appl_row.ExchangeRatesGet
+	var exchangeRatesByte []byte
+	err := r.db.QueryRow("SELECT COALESCE(json_agg(row_to_json(er.*)), '[]') FROM exchange_rates er;").Scan(&exchangeRatesByte)
+	if err != nil {
+		return []appl_row.ExchangeRatesGet{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения запроса из базы данных, %s", err)
+	}
+	err = json.Unmarshal(exchangeRatesByte, &exchangeRates)
+	if err != nil {
+		return []appl_row.ExchangeRatesGet{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции ExchangeRates, %s", err)
+	}
+	return exchangeRates, http.StatusOK, nil
+}
+
 func (r *UserPostgres) CheckAuth(teleId int64) (bool, int, error) {
 	var isAuth bool
 	err := r.db.QueryRow("SELECT user_check_auth($1)", teleId).Scan(&isAuth)
@@ -132,4 +146,18 @@ func (r *UserPostgres) GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, i
 		return []appl_row.UserMinPrice{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции GetUserMinPrice, %s", err)
 	}
 	return userMinPrice, http.StatusOK, nil
+}
+
+func (r *UserPostgres) GetAdminByUser(teleId int64) ([]appl_row.AdminByUser, int, error) {
+	var adminByUser []appl_row.AdminByUser
+	var adminByUserByte []byte
+	err := r.db.QueryRow("SELECT user_get_admin_by_user($1)", teleId).Scan(&adminByUserByte)
+	if err != nil {
+		return []appl_row.AdminByUser{}, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции user_get_admin_by_user из базы данных, %s", err)
+	}
+	err = json.Unmarshal(adminByUserByte, &adminByUser)
+	if err != nil {
+		return []appl_row.AdminByUser{}, http.StatusInternalServerError, fmt.Errorf("ошибка конвертации в функции GetAdminByUser, %s", err)
+	}
+	return adminByUser, http.StatusOK, nil
 }
