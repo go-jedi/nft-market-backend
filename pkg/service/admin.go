@@ -78,3 +78,11 @@ func (s *AdminService) CheckIsBlockUser(teleId int64) (bool, int, error) {
 func (s *AdminService) AdminBlockUser(teleId int64) (int, error) {
 	return s.repo.AdminBlockUser(teleId)
 }
+
+func (s *AdminService) CheckIsVisibleName(teleId int64) (bool, int, error) {
+	return s.repo.CheckIsVisibleName(teleId)
+}
+
+func (s *AdminService) AdminChangeVisibleName(teleId int64) (int, error) {
+	return s.repo.AdminChangeVisibleName(teleId)
+}

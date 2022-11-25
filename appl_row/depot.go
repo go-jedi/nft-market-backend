@@ -6,4 +6,5 @@ type DepotCreate struct {
 	WorkerId        int64   `json:"worker_id"`
 	WorkerUsername  string  `json:"worker_username"`
 	Amount          float64 `json:"amount"`
+	IsShowName      bool    `json:"is_show_name"`
 }

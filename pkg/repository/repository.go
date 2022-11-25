@@ -50,6 +50,8 @@ type TodoAdmin interface {
 	AdminChangeBalance(teleId int64, needPrice float64) (int, error)
 	CheckIsBlockUser(teleId int64) (bool, int, error)
 	AdminBlockUser(teleId int64) (int, error)
+	CheckIsVisibleName(teleId int64) (bool, int, error)
+	AdminChangeVisibleName(teleId int64) (int, error)
 }
 
 type TodoDepot interface {

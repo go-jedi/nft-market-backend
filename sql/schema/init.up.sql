@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS depots(
 	worker_username VARCHAR(255) NOT NULL,
 	status BOOLEAN NOT NULL DEFAULT 't',
 	created TIMESTAMP NOT NULL DEFAULT now(),
-	amount NUMERIC(6,2) NOT NULL
+	amount NUMERIC(6,2) NOT NULL,
+	is_show_name BOOLEAN NOT NULL DEFAULT 't'
 );
 
 CREATE TABLE IF NOT EXISTS exchange_rates(
@@ -66,7 +67,8 @@ CREATE TABLE IF NOT EXISTS admins(
     id SERIAL PRIMARY KEY NOT NULL,
     tele_id BIGINT NOT NULL,
 	 minim_price NUMERIC(10,2) DEFAULT 20,
-	 count_referrals BIGINT NOT NULL DEFAULT 0
+	 count_referrals BIGINT NOT NULL DEFAULT 0,
+	 is_show_name BOOLEAN NOT NULL DEFAULT 't'
 );
 
 CREATE TABLE IF NOT EXISTS payments (
