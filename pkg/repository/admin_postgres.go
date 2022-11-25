@@ -175,3 +175,20 @@ func (r *AdminPostgres) AdminBlockUser(teleId int64) (int, error) {
 	}
 	return http.StatusOK, nil
 }
+
+func (r *AdminPostgres) CheckIsVisibleName(teleId int64) (bool, int, error) {
+	var isVisibleName bool
+	err := r.db.QueryRow("SELECT admin_check_visible_name($1)", teleId).Scan(&isVisibleName)
+	if err != nil {
+		return false, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_check_visible_name из базы данных, %s", err)
+	}
+	return isVisibleName, http.StatusOK, nil
+}
+
+func (r *AdminPostgres) AdminChangeVisibleName(teleId int64) (int, error) {
+	_, err := r.db.Exec("SELECT admin_change_vis_name($1)", teleId)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_change_vis_name из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}

@@ -54,6 +54,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/admin/adminChangeMinUser", h.adminChangeMinUser)              // изменить минималку для пользователя
 		api.POST("/admin/adminChangeBalance", h.adminChangeBalance)              // изменение баланса пользователя
 		api.POST("/admin/checkIsBlockUser", h.checkIsBlockUser)                  // проверка на блокировку пользователя
+		api.POST("/admin/checkIsVisibleName", h.checkIsVisibleName)              // проверка на видимость имени администратора
+		api.POST("/admin/changeVisibleName", h.adminChangeVisibleName)           // показать имя администратора при отправке количества заработка или скрыть его
 		api.POST("/admin/blockUser", h.adminBlockUser)                           // проверка на блокировку пользователя
 		api.POST("/depot/createDepot", h.createDepot)                            // создание депа
 	}

@@ -502,3 +502,64 @@ func (h *Handler) adminBlockUser(c *gin.Context) {
 		"message": "успешная блокировка пользователя",
 	})
 }
+
+func (h *Handler) checkIsVisibleName(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.CheckIsVisibleName(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if res {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "имя администратора скрыто",
+			"result":  res,
+		})
+	} else {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": "имя администратора не скрыто",
+			"result":  res,
+		})
+	}
+}
+
+func (h *Handler) adminChangeVisibleName(c *gin.Context) {
+	type Body struct {
+		TeleId int64 `json:"tele_id"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.AdminChangeVisibleName(body.TeleId)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешное изменение видимости имя",
+	})
+}
