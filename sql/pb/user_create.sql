@@ -23,6 +23,9 @@ BEGIN
 		INSERT INTO users_base(tele_id)
 		VALUES((js->>'tele_id')::BIGINT);
 
+		INSERT INTO users_payment(tele_id)
+		VALUES((js->>'tele_id')::BIGINT);
+
 		RETURN TRUE;
 	END IF;
 	
@@ -31,6 +34,9 @@ BEGIN
 		VALUES(_uid, (js->>'tele_id')::BIGINT, js->>'tele_name', 'usd', _a.minim_price);
 		
 		INSERT INTO users_base(tele_id)
+		VALUES((js->>'tele_id')::BIGINT);
+
+		INSERT INTO users_payment(tele_id)
 		VALUES((js->>'tele_id')::BIGINT);
 
 		RETURN TRUE;

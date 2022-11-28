@@ -62,3 +62,35 @@ func (s *UserService) GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, in
 func (s *UserService) GetAdminByUser(teleId int64) ([]appl_row.AdminByUser, int, error) {
 	return s.repo.GetAdminByUser(teleId)
 }
+
+func (s *UserService) GetUserBalance(teleId int64) ([]appl_row.UserBalance, int, error) {
+	return s.repo.GetUserBalance(teleId)
+}
+
+func (s *UserService) CheckUserToken(teleId int64, tokenUid string) (bool, int, error) {
+	return s.repo.CheckUserToken(teleId, tokenUid)
+}
+
+func (s *UserService) BuyUserToken(userBuyTokenForm appl_row.UserBuyToken) (int, error) {
+	return s.repo.BuyUserToken(userBuyTokenForm)
+}
+
+func (s *UserService) SellUserToken(userSellTokenForm appl_row.UserSellToken) (string, int, error) {
+	return s.repo.SellUserToken(userSellTokenForm)
+}
+
+func (s *UserService) GetUserNft(teleId int64) (appl_row.UserGetNft, int, error) {
+	return s.repo.GetUserNft(teleId)
+}
+
+func (s *UserService) GetUserPaymentEvent(eventUid string) ([]appl_row.UserGetUserPaymentEvent, int, error) {
+	return s.repo.GetUserPaymentEvent(eventUid)
+}
+
+func (s *UserService) CreateWithDrawEvent(userWithDrawForm appl_row.UserWithDrawEventCreate) (string, int, error) {
+	return s.repo.CreateWithDrawEvent(userWithDrawForm)
+}
+
+func (s *UserService) GetWithDrawEvent(withDrawEventUid string) ([]appl_row.WithDrawEventGet, int, error) {
+	return s.repo.GetWithDrawEvent(withDrawEventUid)
+}

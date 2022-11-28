@@ -192,3 +192,20 @@ func (r *AdminPostgres) AdminChangeVisibleName(teleId int64) (int, error) {
 	}
 	return http.StatusOK, nil
 }
+
+func (r *AdminPostgres) AdminBuyTokenUser(teleId int64, tokenUid string, priceUser float64, uidPaymentEvent string) (int, error) {
+	_, err := r.db.Exec("SELECT admin_buy_token_user($1, $2, $3, $4)", teleId, tokenUid, priceUser, uidPaymentEvent)
+	if err != nil {
+		return http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_buy_token_user из базы данных, %s", err)
+	}
+	return http.StatusOK, nil
+}
+
+func (r *AdminPostgres) AdminWithdrawApprove(teleId int64, withDrawEventUid string) (bool, int, error) {
+	var isApproveMoneyUser bool
+	err := r.db.QueryRow("SELECT admin_withdraw_approve($1, $2)", teleId, withDrawEventUid).Scan(&isApproveMoneyUser)
+	if err != nil {
+		return false, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_withdraw_approve из базы данных, %s", err)
+	}
+	return isApproveMoneyUser, http.StatusOK, nil
+}

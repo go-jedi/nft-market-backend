@@ -86,3 +86,11 @@ func (s *AdminService) CheckIsVisibleName(teleId int64) (bool, int, error) {
 func (s *AdminService) AdminChangeVisibleName(teleId int64) (int, error) {
 	return s.repo.AdminChangeVisibleName(teleId)
 }
+
+func (s *AdminService) AdminBuyTokenUser(teleId int64, tokenUid string, priceUser float64, uidPaymentEvent string) (int, error) {
+	return s.repo.AdminBuyTokenUser(teleId, tokenUid, priceUser, uidPaymentEvent)
+}
+
+func (s *AdminService) AdminWithdrawApprove(teleId int64, withDrawEventUid string) (bool, int, error) {
+	return s.repo.AdminWithdrawApprove(teleId, withDrawEventUid)
+}

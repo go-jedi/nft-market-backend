@@ -51,3 +51,54 @@ type AdminByUser struct {
 	TeleId   int64  `json:"tele_id"`
 	TeleName string `json:"tele_name"`
 }
+
+type UserBalance struct {
+	Balance float64 `json:"balance"`
+}
+
+type UserBuyToken struct {
+	TeleId     int64   `json:"tele_id"`
+	TokenUid   string  `json:"token_uid"`
+	TokenPrice float64 `json:"token_price"`
+}
+
+type UserNft struct {
+	Name     string  `json:"name"`
+	Price    float64 `json:"price"`
+	Author   string  `json:"author"`
+	TokenUid string  `json:"token_uid"`
+}
+
+type UserGetNft struct {
+	NftBuy  []UserNft `json:"nft_buy"`
+	NftSell []UserNft `json:"nft_sell"`
+}
+
+type UserSellToken struct {
+	TeleId     int64   `json:"tele_id"`
+	TokenUid   string  `json:"token_uid"`
+	TokenPrice float64 `json:"token_price"`
+}
+
+type UserCheckToken struct {
+	BuyNft []string `json:"buy_nft"`
+}
+
+type UserGetUserPaymentEvent struct {
+	TeleId    int64   `json:"tele_id"`
+	Uid       string  `json:"uid"`
+	NameToken string  `json:"name_token"`
+	Price     float64 `json:"price"`
+}
+
+type UserWithDrawEventCreate struct {
+	TeleId int64   `json:"tele_id"`
+	Price  float64 `json:"price"`
+}
+
+type WithDrawEventGet struct {
+	TeleId     int64   `json:"tele_id"`
+	Uid        string  `json:"uid"`
+	Price      float64 `json:"price"`
+	IsFinished bool    `json:"is_finished"`
+}

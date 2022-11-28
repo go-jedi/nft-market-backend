@@ -32,6 +32,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/user/getUserProfile", h.getUserProfile)                       // получение профиля пользователя
 		api.POST("/user/getUserMinPrice", h.getUserMinPrice)                     // получение минималки пользователя
 		api.POST("/user/getAdminByUser", h.getAdminByUser)                       // получить закрепленного за пользователем администратора
+		api.POST("/user/getUserBalance", h.getUserBalance)                       // узнать баланс пользователя
+		api.POST("/user/checkUserToken", h.checkUserToken)                       // проверить есть ли у пользователя данный токен
+		api.POST("/user/buyUserToken", h.buyUserToken)                           // покупка токена пользователем
+		api.POST("/user/sellUserToken", h.sellUserToken)                         // продажа токена пользователем
+		api.POST("/user/getUserPaymentEvent", h.getUserPaymentEvent)             // получить событие продажи по uid
+		api.POST("/user/getUserNft", h.getUserNft)                               // получить nft пользователя
+		api.POST("/user/createWithDrawEvent", h.createWithDrawEvent)             // создание события вывода пользователем
+		api.POST("/user/getWithDrawEvent", h.getWithDrawEvent)                   // получить событие вывода пользователем
 		api.GET("/payment/getAll", h.getAllPayments)                             // получение всех платёжек
 		api.POST("/payment/createPayment", h.createPayment)                      // создание платёжки
 		api.GET("/collection/getAll", h.getAllCollections)                       // получение всех коллекций
@@ -57,7 +65,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/admin/checkIsVisibleName", h.checkIsVisibleName)              // проверка на видимость имени администратора
 		api.POST("/admin/changeVisibleName", h.adminChangeVisibleName)           // показать имя администратора при отправке количества заработка или скрыть его
 		api.POST("/admin/blockUser", h.adminBlockUser)                           // проверка на блокировку пользователя
+		api.POST("/admin/adminBuyTokenUser", h.adminBuyTokenUser)                // покупка администратором токена пользователя
 		api.POST("/depot/createDepot", h.createDepot)                            // создание депа
+		api.POST("/admin/adminWithdrawApprove", h.adminWithdrawApprove)          // согласие администратора с выводом денег пользователя
 	}
 
 	return router

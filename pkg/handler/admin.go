@@ -563,3 +563,68 @@ func (h *Handler) adminChangeVisibleName(c *gin.Context) {
 		"message": "успешное изменение видимости имя",
 	})
 }
+
+func (h *Handler) adminBuyTokenUser(c *gin.Context) {
+	type Body struct {
+		TeleId          int64   `json:"tele_id"`
+		TokenUid        string  `json:"token_uid"`
+		PriceUser       float64 `json:"price_user"`
+		UidPaymentEvent string  `json:"uid_payment_event"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	statusCode, err := h.services.AdminBuyTokenUser(body.TeleId, body.TokenUid, body.PriceUser, body.UidPaymentEvent)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(statusCode, map[string]interface{}{
+		"status":  statusCode,
+		"message": "успешное покупка nft у пользователя",
+	})
+}
+
+func (h *Handler) adminWithdrawApprove(c *gin.Context) {
+	type Body struct {
+		TeleId           int64  `json:"tele_id"`
+		WithDrawEventUid string `json:"with_draw_event_uid"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.AdminWithdrawApprove(body.TeleId, body.WithDrawEventUid)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if res {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешный вывод денег пользователя",
+			"result":  res,
+		})
+	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешный вывод денег пользователя",
+			"result":  res,
+		})
+	}
+}

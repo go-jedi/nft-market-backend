@@ -18,6 +18,14 @@ type TodoUser interface {
 	GetUserProfile(teleId int64) ([]appl_row.UserProfile, int, error)
 	GetUserMinPrice(teleId int64) ([]appl_row.UserMinPrice, int, error)
 	GetAdminByUser(teleId int64) ([]appl_row.AdminByUser, int, error)
+	GetUserBalance(teleId int64) ([]appl_row.UserBalance, int, error)
+	CheckUserToken(teleId int64, tokenUid string) (bool, int, error)
+	BuyUserToken(userBuyTokenForm appl_row.UserBuyToken) (int, error)
+	SellUserToken(userSellTokenForm appl_row.UserSellToken) (string, int, error)
+	GetUserNft(teleId int64) (appl_row.UserGetNft, int, error)
+	GetUserPaymentEvent(eventUid string) ([]appl_row.UserGetUserPaymentEvent, int, error)
+	CreateWithDrawEvent(userWithDrawForm appl_row.UserWithDrawEventCreate) (string, int, error)
+	GetWithDrawEvent(withDrawEventUid string) ([]appl_row.WithDrawEventGet, int, error)
 }
 
 type TodoPayment interface {
@@ -52,6 +60,8 @@ type TodoAdmin interface {
 	AdminBlockUser(teleId int64) (int, error)
 	CheckIsVisibleName(teleId int64) (bool, int, error)
 	AdminChangeVisibleName(teleId int64) (int, error)
+	AdminBuyTokenUser(teleId int64, tokenUid string, priceUser float64, uidPaymentEvent string) (int, error)
+	AdminWithdrawApprove(teleId int64, withDrawEventUid string) (bool, int, error)
 }
 
 type TodoDepot interface {
