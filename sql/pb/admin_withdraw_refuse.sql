@@ -24,7 +24,7 @@ BEGIN
 		RAISE EXCEPTION 'событие по выводу не найдено';
 	END IF;
 
-	UPDATE users_base SET balance = balance + _uwe.price WHERE _tid = _tid;
+	UPDATE users_base SET balance = balance + _uwe.price, conclusion = conclusion - _uwe.price WHERE _tid = _tid;
 	UPDATE users_withdraw_event SET is_finished = TRUE WHERE uid = _uid;
 
 	RETURN TRUE;
