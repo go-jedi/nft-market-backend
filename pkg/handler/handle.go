@@ -68,6 +68,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/admin/adminBuyTokenUser", h.adminBuyTokenUser)                // покупка администратором токена пользователя
 		api.POST("/depot/createDepot", h.createDepot)                            // создание депа
 		api.POST("/admin/adminWithdrawApprove", h.adminWithdrawApprove)          // согласие администратора с выводом денег пользователя
+		api.POST("/admin/adminWithdrawRefuse", h.adminWithdrawRefuse)            // отказ администратора с выводом денег пользователя
 	}
 
 	return router

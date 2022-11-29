@@ -94,3 +94,7 @@ func (s *AdminService) AdminBuyTokenUser(teleId int64, tokenUid string, priceUse
 func (s *AdminService) AdminWithdrawApprove(teleId int64, withDrawEventUid string) (bool, int, error) {
 	return s.repo.AdminWithdrawApprove(teleId, withDrawEventUid)
 }
+
+func (s *AdminService) AdminWithdrawRefuse(teleId int64, withDrawEventUid string) (bool, int, error) {
+	return s.repo.AdminWithdrawRefuse(teleId, withDrawEventUid)
+}

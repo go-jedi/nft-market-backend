@@ -628,3 +628,39 @@ func (h *Handler) adminWithdrawApprove(c *gin.Context) {
 		})
 	}
 }
+
+func (h *Handler) adminWithdrawRefuse(c *gin.Context) {
+	type Body struct {
+		TeleId           int64  `json:"tele_id"`
+		WithDrawEventUid string `json:"with_draw_event_uid"`
+	}
+	var body Body
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"status":  http.StatusBadRequest,
+			"message": "некорректно переданы данные в body",
+		})
+		return
+	}
+	res, statusCode, err := h.services.AdminWithdrawRefuse(body.TeleId, body.WithDrawEventUid)
+	if err != nil {
+		c.JSON(statusCode, map[string]interface{}{
+			"status":  statusCode,
+			"message": err.Error(),
+		})
+		return
+	}
+	if res {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешный отказ в выводе денег пользователю",
+			"result":  res,
+		})
+	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  http.StatusOK,
+			"message": "успешный отказ в выводе денег пользователю",
+			"result":  res,
+		})
+	}
+}

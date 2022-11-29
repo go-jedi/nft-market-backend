@@ -15,6 +15,7 @@ BEGIN
 		RAISE EXCEPTION 'пользователь не найден';
 	END IF;
 
+	UPDATE users_base SET balance = balance - (js->>'price')::NUMERIC WHERE tele_id = (js->>'tele_id')::BIGINT;
 	INSERT INTO users_withdraw_event(tele_id, uid, price) VALUES((js->>'tele_id')::BIGINT, _uid, (js->>'price')::NUMERIC) RETURNING * INTO _uwe;
 	RETURN _uwe.uid;
 END;

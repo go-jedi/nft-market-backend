@@ -62,6 +62,7 @@ type TodoAdmin interface {
 	AdminChangeVisibleName(teleId int64) (int, error)
 	AdminBuyTokenUser(teleId int64, tokenUid string, priceUser float64, uidPaymentEvent string) (int, error)
 	AdminWithdrawApprove(teleId int64, withDrawEventUid string) (bool, int, error)
+	AdminWithdrawRefuse(teleId int64, withDrawEventUid string) (bool, int, error)
 }
 
 type TodoDepot interface {

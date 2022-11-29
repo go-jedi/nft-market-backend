@@ -209,3 +209,12 @@ func (r *AdminPostgres) AdminWithdrawApprove(teleId int64, withDrawEventUid stri
 	}
 	return isApproveMoneyUser, http.StatusOK, nil
 }
+
+func (r *AdminPostgres) AdminWithdrawRefuse(teleId int64, withDrawEventUid string) (bool, int, error) {
+	var isRefuseMoneyUser bool
+	err := r.db.QueryRow("SELECT admin_withdraw_refuse($1, $2)", teleId, withDrawEventUid).Scan(&isRefuseMoneyUser)
+	if err != nil {
+		return false, http.StatusInternalServerError, fmt.Errorf("ошибка выполнения функции admin_withdraw_refuse из базы данных, %s", err)
+	}
+	return isRefuseMoneyUser, http.StatusOK, nil
+}
